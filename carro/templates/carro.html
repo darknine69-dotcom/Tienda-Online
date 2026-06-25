@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito de Compras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #1e293b;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+        }
+        img {
+            width: 60px;
+            border-radius: 6px;
+        }
+        .acciones button {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            margin: 2px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        .acciones button:hover {
+            background: #1e40af;
+        }
+        .total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        .limpiar {
+            text-align: right;
+            margin-top: 10px;
+        }
+        .limpiar a {
+            background: #dc2626;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .limpiar a:hover {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+    <header>🛒 Carrito de Compras</header>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in request.session.carro.values %}
+                <tr>
+                    <td><img src="{{ item.imagen }}" alt="{{ item.nombre }}"></td>
+                    <td>{{ item.nombre }}</td>
+                    <td>${{ item.precio }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td class="acciones">
+                        <a href="{% url 'agregar_producto' item.producto_id %}">
+                            <button>➕</button>
+                        </a>
+                        <a href="{% url 'restar_producto' item.producto_id %}">
+                            <button>➖</button>
+                        </a>
+                        <a href="{% url 'eliminar_producto' item.producto_id %}">
+                            <button>🗑️</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total">
+            Total: ${{ total }}
+        </div>
+
+        <div class="limpiar">
+            <a href="{% url 'limpiar_carro' %}">🧹 Vaciar Carrito</a>
+        </div>
+    </div>
+</body>
+</html>

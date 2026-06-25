@@ -1,0 +1,93 @@
+{% extends 'ProyectoWebApp/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .botones-vista {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .boton-vista {
+    display: inline-block;
+    margin: 0 8px;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 6px;
+    background: white;
+    color: black;
+  }
+
+  .boton-activo {
+    background: #b08968;
+    color: white;
+  }
+</style>
+
+<h1 style="color:white; text-align:center;">Blog</h1>
+
+<div class="botones-vista">
+  <a href="?vista=lista" class="boton-vista {% if vista == 'lista' %}boton-activo{% endif %}">Lista</a>
+  <a href="?vista=tarjetas" class="boton-vista {% if vista == 'tarjetas' %}boton-activo{% endif %}">Tarjetas</a>
+  <a href="?vista=carrusel" class="boton-vista {% if vista == 'carrusel' %}boton-activo{% endif %}">Carrusel</a>
+</div>
+
+{% if posts %}
+  {% if vista == 'tarjetas' %}
+    <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+      {% for post in posts %}
+        <div style="width:280px; min-height:420px; background:white; color:black; padding:15px; border-radius:8px; text-align:center;">
+          {% if post.imagen %}
+            <img src="{{ post.imagen.url }}" style="width:100%; height:180px; object-fit:cover; border-radius:6px;">
+          {% endif %}
+          <h3 style="margin-top:15px;">{{ post.titulo }}</h3>
+          <p>{{ post.contenido }}</p>
+          <p><strong>Autor:</strong> {{ post.autor }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif vista == 'carrusel' %}
+    <div id="blogCarousel" class="carousel slide" data-ride="carousel" style="max-width:700px; margin:0 auto 30px auto;">
+      <div class="carousel-inner">
+        {% for post in posts %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div style="text-align:center; color:white; padding:20px 50px;">
+              {% if post.imagen %}
+                <img src="{{ post.imagen.url }}" style="width:100%; max-width:350px; height:260px; object-fit:cover; border-radius:8px; margin-bottom:20px;">
+              {% endif %}
+              <h2>{{ post.titulo }}</h2>
+              <p>{{ post.contenido }}</p>
+              <p><strong>Autor:</strong> {{ post.autor }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <a class="carousel-control-prev" href="#blogCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+      </a>
+      <a class="carousel-control-next" href="#blogCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
+    </div>
+  {% else %}
+    {% for post in posts %}
+      <div style="color:white; text-align:center; margin-bottom:30px;">
+        <h2>{{ post.titulo }}</h2>
+        <p>{{ post.contenido }}</p>
+
+        {% if post.imagen %}
+          <img src="{{ post.imagen.url }}" style="width:250px; height:auto; border-radius:6px;">
+        {% endif %}
+
+        <p>Autor: {{ post.autor }}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% else %}
+  <p style="color:white; text-align:center;">No hay posts registrados.</p>
+{% endif %}
+
+{% endblock %}

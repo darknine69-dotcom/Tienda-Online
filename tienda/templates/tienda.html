@@ -1,0 +1,26 @@
+{% extends 'ProyectoWebApp/base.html' %}
+{% load static %}
+{% block content %}
+
+<h1 style="color: white; text-align: center;">SHOP</h1>
+<div class="container">
+  <div style="float: right;">     --posiciona ala derecha
+    <p style="color: white;" >Zona Carrito</p>
+    {% include 'carro/widget.html' %} 
+  </div>
+  
+<div class="row">
+{% for pro in productos %}
+<div class="card" style="width: 25%; margin: 5px 5px;">
+  <img style="width: 180px; height: 200px; display:  block; margin: auto; " class="card-img-top" src="{{pro.imagen.url}}" alt="Card image cap">
+  <div class="card-body" style=" margin: 10px;">
+    <h5 class="card-title" style="text-align: center;">{{pro.nombre}}</h5>
+    <p class="card-text" style="text-align: center;">{{pro.categoria}}</p>
+    <a href="{% url 'carro:agregar' pro.id %}" style="display:block; margin:auto; " class="btn btn-primary">CARRITO</a>
+  </div>
+</div>
+{% endfor %}
+</div>
+</div> --fin del container
+{% endblock %}
+

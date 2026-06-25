@@ -1,0 +1,17 @@
+{% extends 'ProyectoWebApp/base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<center>
+<h1 style="color: aqua;" >Test Authenticacion </h1>
+<form action="" method="post" style="color: azure;">
+    {% csrf_token %}
+    <div style="width: 60%;" margin: "auto;">
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Registrar</button>
+    </div>
+</form>
+
+{% endblock %}
+</center>
